@@ -24,7 +24,7 @@ import testimg from "../../../public/page-1/testimg.svg";
 import { useState } from "react";
 
 type FamiliarCardProps = {
-  initialTitle: string;
+  initialTitle: string | undefined;
   flippedText: string;
   flippedTitle: string;
 };
