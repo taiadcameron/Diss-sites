@@ -192,15 +192,19 @@ export default function Home() {
     });
   };
 
-  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     gtag.event({
       action: "submit_form",
       category: "contact",
       label: "contact_form_submission",
       value: 0,
     });
-    alert("Form submitted!");
+
+    alert("Thank you for your message! We will get back to you shortly.");
+
+    event.currentTarget.reset();
   };
 
   return (

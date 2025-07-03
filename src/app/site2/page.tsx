@@ -397,6 +397,7 @@ export default function Home() {
               </div>
               <div className="sm:col-span-2 flex flex-col items-start">
                 <button
+                  id="contact-form"
                   type="submit"
                   disabled={isSent}
                   className="bg-primary-site2 text-white px-6 py-3 shadow-md hover:bg-black transition duration-300 ease-in-out mb-10 disabled:bg-gray-400 disabled:cursor-not-allowed"
