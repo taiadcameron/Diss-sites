@@ -4,9 +4,9 @@ import {
   EnvelopeIcon,
   MapPinIcon,
 } from "@heroicons/react/24/outline";
-
 import Image from "next/image";
 import { useState } from "react";
+import * as gtag from "@/lib/gtag";
 
 const cred1 = "/page-2/cred (1).png";
 const cred2 = "/page-2/cred (2).png";
@@ -14,6 +14,7 @@ const cred3 = "/page-2/cred (3).png";
 const pfp = "/page-2/pfp.png";
 const fee = "/page-2/fee.png";
 const office = "/page-2/table.png";
+
 const Accordion = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
@@ -52,18 +53,20 @@ const Accordion = () => {
   ];
 
   return (
-    <div className="w-full   ">
+    <div className="w-full">
       {items.map((item, index) => (
-        <div key={index} className="border  border-black ">
+        <div key={index} className="border border-black mb-[-1px]">
           <button
             onClick={() => toggle(index)}
-            className="flex justify-between items-center w-full text-left text-lg p-6 py-4 font-semibold    "
+            className="flex justify-between items-center w-full text-left text-lg p-6 py-4 font-semibold"
           >
             {item.question}
-            <span className="ml-2">{openIndex === index ? "−" : "+"}</span>
+            <span className="ml-2 text-2xl">
+              {openIndex === index ? "−" : "+"}
+            </span>
           </button>
           {openIndex === index && (
-            <div className=" text-base p-6 text-white bg-primary-site2">
+            <div className="text-base p-6 text-white bg-primary-site2">
               {item.answer}
             </div>
           )}
@@ -79,15 +82,34 @@ export default function Home() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    gtag.event({
+      action: "submit_form",
+      category: "contact",
+      label: "patient_inquiry_submission",
+      value: 0,
+    });
+
     setIsSent(true);
+
+    setTimeout(() => {
+      setIsSent(false);
+    }, 4000);
+  };
+
+  const handleCTAClick = (label: string) => {
+    gtag.event({
+      action: "cta_click",
+      category: "navigation",
+      label: label,
+      value: 0,
+    });
   };
 
   return (
     <>
-      <section className="hero pt-40 pb-16  h-screen  text-black flex  items-start justify-between gap-8">
-        <div className="flex flex-col justify-between h-full ">
+      <section className="hero pt-40 pb-16 h-screen text-black flex items-start justify-between gap-8">
+        <div className="flex flex-col justify-between h-full">
           <div>
-            {" "}
             <h1 className="text-4xl font-bold mb-4">
               Dr. Anna Harrison, <br /> MSc, MBACP
             </h1>
@@ -98,7 +120,10 @@ export default function Home() {
             </p>
           </div>
           <div>
-            <button className="bg-primary-site2 text-white px-6 py-3 shadow-md hover:bg-black transition duration-300 ease-in-out mb-10">
+            <button
+              onClick={() => handleCTAClick("hero_book_appointment")}
+              className="bg-primary-site2 text-white px-6 py-3 shadow-md hover:bg-black transition duration-300 ease-in-out mb-10"
+            >
               Book an Appointment
             </button>
             <div className="flex gap-24 items-center">
@@ -113,84 +138,87 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="relative w-2/4 h-full  ">
+        <div className="relative w-2/4 h-full">
           <Image
             src={pfp}
             alt="Dr. Anna Harrison"
             layout="fill"
             objectFit="cover"
-            className=""
           />
         </div>
       </section>
 
-      <section id="about" className="pt-24  flex justify-between">
-        <div className="flex flex-col  items-start  ">
+      <hr />
+
+      <section id="about" className="pt-24 flex justify-between">
+        <div className="flex flex-col items-start">
           <h2 className="text-3xl font-bold mb-4">Therapeutic Methodology</h2>
           <p className="text-lg mb-6 max-w-3xl">
             This practice utilises evidence-based methodologies to ensure the
             highest standard of care. The primary modality is Cognitive
             Behavioural Therapy (CBT), a structured approach for treating a
-            range of issues by changing patterns of thinking and behaviour. All
-            treatment plans are developed in line with NICE guidelines and
-            professional best practices.
+            range of issues by changing patterns of thinking and behaviour.
           </p>
         </div>
-        <div className="relative  w-96 h-64">
-          <Image src={fee} alt="Fees illustration" layout="fill" objectFit="" />
+        <div className="relative w-96 h-64">
+          <Image
+            src={fee}
+            alt="Fees illustration"
+            layout="fill"
+            objectFit="contain"
+          />
         </div>
       </section>
 
+      <hr />
+
       <section id="services" className="pt-24">
-        <div className="flex flex-row  justify-between mb-8 gap-4">
-          <h2 className="text-3xl font-bold ">Clinical Services Offered</h2>
-          <button className="bg-primary-site2 text-white px-6 py-3 shadow-md hover:bg-black transition duration-300 ease-in-out mb-10">
+        <div className="flex flex-row justify-between mb-8 gap-4">
+          <h2 className="text-3xl font-bold">Clinical Services Offered</h2>
+          <button
+            onClick={() => handleCTAClick("services_find_out_more")}
+            className="bg-primary-site2 text-white px-6 py-3 shadow-md hover:bg-black transition duration-300 ease-in-out mb-10"
+          >
             Find Out More
           </button>
         </div>
-
         <div className="grid grid-cols-3 gap-8 pr-52">
-          <div className="bg-primary-site2  text-white p-10  flex flex-col justify-between h-88">
-            <h3 className="text-3xl  mb-2">
+          <div className="bg-primary-site2 text-white p-10 flex flex-col justify-between h-88">
+            <h3 className="text-3xl mb-2">
               Cognitive Behavioural Therapy (CBT)
             </h3>
-            <p className="text-base ">
+            <p className="text-base">
               For the treatment of Generalised Anxiety Disorder (GAD),
               depression, and panic attacks.
             </p>
           </div>
-
-          <div className="bg-primary-site2  text-white p-10  flex flex-col justify-between h-88">
-            <h3 className="text-3xl  mb-2">EMDR Therapy</h3>
-            <p className="text-base ">
+          <div className="bg-primary-site2 text-white p-10 flex flex-col justify-between h-88">
+            <h3 className="text-3xl mb-2">EMDR Therapy</h3>
+            <p className="text-base">
               A specialised treatment for Post-Traumatic Stress Disorder (PTSD)
               and trauma.
             </p>
           </div>
-
-          <div className="bg-primary-site2  text-white p-10  flex flex-col justify-between h-88">
-            <h3 className="text-3xl  mb-2">
-              Interpersonal Psychotherapy (IPT)
-            </h3>
-            <p className="text-base ">
-              A time-limited, focused approach for treating mood disorders,
-              improving the quality of a client's interpersonal relationships
-              and social functioning to help reduce their distress.
+          <div className="bg-primary-site2 text-white p-10 flex flex-col justify-between h-88">
+            <h3 className="text-3xl mb-2">Interpersonal Psychotherapy (IPT)</h3>
+            <p className="text-base">
+              A time-limited, focused approach for treating mood disorders.
             </p>
           </div>
         </div>
       </section>
 
-      <section className="my-16 p-12  text-white bg-primary-site2 text-whi  ">
+      <hr />
+
+      <section className="my-16 p-12 text-white bg-primary-site2">
         <div className="mb-8 text-left">
           <h2 className="text-3xl font-bold mb-4">Areas of Specialisation</h2>
-          <p className="text-base md:text-lg max-w-3xl mx-auto md:mx-0">
+          <p className="text-base md:text-lg max-w-3xl">
             The practice specialises in providing support for the following
             conditions:
           </p>
         </div>
-
-        <div className=" p-6  grid grid-cols-2 gap-y-6">
+        <div className="p-6 grid grid-cols-2 gap-y-6">
           <div className="flex items-center gap-2">
             <div className="h-2 w-2 rounded-full bg-white flex-shrink-0"></div>
             <h4 className="text-lg font-medium">Work-Related Stress</h4>
@@ -216,22 +244,26 @@ export default function Home() {
         </div>
       </section>
 
+      <hr />
+
       <section
         id="fees"
-        className="py-16 flex  items-center justify-center gap-16"
+        className="py-16 flex items-center justify-center gap-16"
       >
         <div className="flex flex-col justify-between w-full">
           <h2 className="text-3xl font-bold mb-4">Consultation Fees</h2>
           <p className="text-base md:text-lg mb-6 max-w-xl">
             The standard fee for a 50-minute clinical session is £95. A limited
-            number of concessionary rates are available. Please inquire for
-            details regarding private health insurance.
+            number of concessionary rates are available.
           </p>
-          <button className="bg-primary-site2 text-white px-6 py-3 shadow-md hover:bg-black transition duration-300 ease-in-out mb-10 w-fit">
+          <button
+            onClick={() => handleCTAClick("fees_book_appointment")}
+            className="bg-primary-site2 text-white px-6 py-3 shadow-md hover:bg-black transition duration-300 ease-in-out mb-10 w-fit"
+          >
             Book an Appointment
           </button>
         </div>
-        <div className="relative w-64 h-40 md:w-80 md:h-52 lg:w-96 lg:h-64">
+        <div className="relative w-64 h-40 md:w-96 md:h-64">
           <Image
             src={fee}
             alt="Fees illustration"
@@ -241,10 +273,12 @@ export default function Home() {
         </div>
       </section>
 
+      <hr />
+
       <section id="faq" className="py-16 px-4">
-        <h2 className="text-3xl font-bold mb-8 ">Frequently Asked Questions</h2>
+        <h2 className="text-3xl font-bold mb-8">Frequently Asked Questions</h2>
         <div className="flex flex-row items-center justify-between gap-12">
-          <div className="  w-2/4 ">
+          <div className="w-2/4">
             <Accordion />
           </div>
           <div className="relative w-96 h-96">
@@ -258,6 +292,8 @@ export default function Home() {
         </div>
       </section>
 
+      <hr />
+
       <section id="contact" className="bg-white py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto lg:grid lg:grid-cols-2 lg:gap-24">
           <div className="flex flex-col">
@@ -265,7 +301,7 @@ export default function Home() {
               Submit a Patient Inquiry
             </h2>
             <p className="mt-3 text-lg text-gray-500">
-              15-minute consultation to see if we're a good fit.
+              Book a free 15-minute consultation to see if we're a good fit.
             </p>
             <form
               onSubmit={handleSubmit}
@@ -284,9 +320,8 @@ export default function Home() {
                     type="text"
                     name="full-name"
                     id="full-name"
-                    autoComplete="name"
-                    placeholder="Jack..."
-                    className="py-3 px-4 block w-full border text-gray-900 focus:ring-indigo-500 focus:border-indigo-500 "
+                    required
+                    className="py-3 px-4 block w-full border text-gray-900 focus:ring-indigo-500 focus:border-indigo-500"
                   />
                 </div>
               </div>
@@ -302,9 +337,8 @@ export default function Home() {
                     id="email"
                     name="email"
                     type="email"
-                    autoComplete="email"
-                    placeholder="Hello@Example.com"
-                    className="py-3 px-4 block w-full border text-gray-900 focus:ring-indigo-500 focus:border-indigo-500 "
+                    required
+                    className="py-3 px-4 block w-full border text-gray-900 focus:ring-indigo-500 focus:border-indigo-500"
                   />
                 </div>
               </div>
@@ -320,9 +354,7 @@ export default function Home() {
                     type="text"
                     name="phone"
                     id="phone"
-                    autoComplete="tel"
-                    placeholder="+44"
-                    className="py-3 px-4 block w-full border text-gray-900 focus:ring-indigo-500 focus:border-indigo-500 "
+                    className="py-3 px-4 block w-full border text-gray-900 focus:ring-indigo-500 focus:border-indigo-500"
                   />
                 </div>
               </div>
@@ -337,12 +369,12 @@ export default function Home() {
                   <select
                     id="reason"
                     name="reason"
-                    className="py-3 px-4 block w-full border text-gray-900 focus:ring-indigo-500 focus:border-indigo-500 "
+                    required
+                    className="py-3 px-4 block w-full border text-gray-900 focus:ring-indigo-500 focus:border-indigo-500"
                   >
                     <option>Not Selected</option>
                     <option>Therapy</option>
                     <option>Consultation</option>
-                    <option>General Inquiry</option>
                   </select>
                 </div>
               </div>
@@ -358,13 +390,10 @@ export default function Home() {
                     id="message"
                     name="message"
                     rows={4}
-                    placeholder="Let Us Know How We Can Help!"
-                    className="py-3 px-4 block w-full border text-gray-900 focus:ring-indigo-500 focus:border-indigo-500 "
+                    required
+                    className="py-3 px-4 block w-full border text-gray-900 focus:ring-indigo-500 focus:border-indigo-500"
                   ></textarea>
                 </div>
-              </div>
-              <div className="sm:col-span-2">
-                <hr className="mt-4 border-t border-gray-300" />
               </div>
               <div className="sm:col-span-2 flex flex-col items-start">
                 <button
@@ -372,16 +401,11 @@ export default function Home() {
                   disabled={isSent}
                   className="bg-primary-site2 text-white px-6 py-3 shadow-md hover:bg-black transition duration-300 ease-in-out mb-10 disabled:bg-gray-400 disabled:cursor-not-allowed"
                 >
-                  {isSent ? "Sent" : "Send a Message"}
+                  {isSent ? "Message Sent ✔" : "Send a Message"}
                 </button>
-                <p className="mt-4 text-xs text-gray-500">
-                  Your information is confidential and will only be used to
-                  contact you regarding your inquiry.
-                </p>
               </div>
             </form>
           </div>
-
           <div className="mt-12 lg:mt-0">
             <div className="space-y-10">
               <div>
