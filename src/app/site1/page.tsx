@@ -25,8 +25,8 @@ import { useState } from "react";
 
 type FamiliarCardProps = {
   initialTitle: string | undefined;
-  flippedText: string;
-  flippedTitle: string;
+  flippedText: string | undefined;
+  flippedTitle: string | undefined;
 };
 
 import hand from "../../../public/page-1/hand.svg";
@@ -350,9 +350,9 @@ export default function Home() {
                 return (
                   <FamiliarCard
                     key={index}
-                    initialTitle={item.initialTitle}
-                    flippedTitle={item.flippedTitle}
-                    flippedText={item.flippedText}
+                    initialTitle={item.initialTitle ?? ""}
+                    flippedTitle={item.flippedTitle ?? ""}
+                    flippedText={item.flippedText ?? ""}
                   />
                 );
               }
