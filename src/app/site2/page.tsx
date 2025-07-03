@@ -82,10 +82,14 @@ export default function Home() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    const formData = new FormData(event.currentTarget);
+    const reason = formData.get("reason") as string;
+
     gtag.event({
-      action: "submit_form",
-      category: "contact",
-      label: "patient_inquiry_submission",
+      action: "generate_lead",
+      category: "engagement",
+      label: "Patient Inquiry Form",
+
       value: 0,
     });
 
@@ -93,6 +97,7 @@ export default function Home() {
 
     setTimeout(() => {
       setIsSent(false);
+      event.currentTarget.reset();
     }, 4000);
   };
 
