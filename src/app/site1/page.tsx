@@ -23,6 +23,12 @@ import {
 import testimg from "../../../public/page-1/testimg.svg";
 import { useState } from "react";
 
+type FamiliarCardProps = {
+  initialTitle: string;
+  flippedText: string;
+  flippedTitle: string;
+};
+
 import hand from "../../../public/page-1/hand.svg";
 
 const Accordion = () => {
@@ -87,7 +93,11 @@ const Accordion = () => {
   );
 };
 
-const FamiliarCard = ({ initialTitle, flippedText, flippedTitle }) => {
+const FamiliarCard = ({
+  initialTitle,
+  flippedText,
+  flippedTitle,
+}: FamiliarCardProps) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
   const handleClick = () => {
@@ -100,7 +110,7 @@ const FamiliarCard = ({ initialTitle, flippedText, flippedTitle }) => {
       onClick={handleClick}
     >
       {isFlipped ? (
-        // Flipped state now uses the 'flippedTitle' prop
+        // flipped card
         <div className="w-full h-fit p-6 flex flex-col justify-between text-left">
           <div>
             <h4 className="font-semibold text-xl mb-2">{flippedTitle}</h4>
@@ -111,7 +121,6 @@ const FamiliarCard = ({ initialTitle, flippedText, flippedTitle }) => {
           </button>
         </div>
       ) : (
-        // Initial state remains the same
         <div className="w-full h-full flex flex-col justify-center items-center">
           <h4 className="font-semibold">{initialTitle}</h4>
           <p>(Click Me)</p>
@@ -122,7 +131,6 @@ const FamiliarCard = ({ initialTitle, flippedText, flippedTitle }) => {
 };
 
 export default function Home() {
-  // Updated data structure to include a unique 'flippedTitle' for each card.
   const familiarGridItems = [
     {
       type: "card",
