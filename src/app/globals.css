@@ -11,6 +11,17 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
+@theme {
+  --color-primary-site2: #00529b;
+
+  --color-site1-text: #364139;
+  --color-site1-green: #d8e2dc;
+  --color-site1-cta: #d19a8d;
+  --color-site1-white: #f9f6f2;
+
+  --font-site1-prim: "Merriweather", "serif";
+  --font-site1-sec: "Montserrat", "sans-serif";
+}
 
 @media (prefers-color-scheme: dark) {
   :root {
